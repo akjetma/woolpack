@@ -45,6 +45,24 @@
      [[x1 y1] [x2 y1] 
       [x1 y2] [x2 y2]])))
 
+(defn d-trans
+  [mag [x y] x-dir y-dir]
+  [(x-dir x mag)
+   (y-dir y mag)])
+
+(defn pad-box
+  [[a b
+    c d]
+   amt]
+  (let [pad (partial d-trans amt)]
+    [(pad a - -) (pad b + -)
+     (pad c - +) (pad d + +)]))
+
+(defn box-corners
+  [[x1 y1] [x2 y2]]
+  [[x1 y1] [x2 y1] 
+   [x1 y2] [x2 y2]])
+
 (defn box-lines
   "takes [top-left top-right bot-left bot-right] box corners and returns
    [top bot left right] line segments."
@@ -140,8 +158,9 @@
          [x2 y2] (end x1 y1 word rotation)
          [x-min x-max] (sort [x1 x2])
          [y-min y-max] (sort [y1 y2])
-         box (box-corners [x-min y-min] [x-max y-max] -1)
-         success? (not-any? (partial collide? box) (:boxes cloud))
+         box (box-corners [x-min y-min] [x-max y-max])
+         mini (pad-box box -1)
+         success? (not-any? (partial collide? mini) (:boxes cloud))
          exhausted? (= 5 tries)]
      (cond 
        success? [x1 y1 x2 y2 rotation box]       
@@ -165,7 +184,7 @@
           (assoc :x x2
                  :y y2                  
                  :last-rotation new-rotation
-                 :rotation (mod (+ new-rotation 90) 360))
+                 :rotation (mod (+ new-rotation 180) 360))
           (update :placed conj placed)
           (update :boxes conj box)
           (update :x-min min x1 x2)

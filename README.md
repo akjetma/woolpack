@@ -3,7 +3,7 @@
 A wordcloud layout algorithm in Clojure.
 
 ```clojure
-[akjetma/woolpack "0.1.2"]
+[akjetma/woolpack "0.1.3"]
 ```
 
 ## Basic Usage

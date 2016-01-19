@@ -1,7 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
-## [0.1.2] - 2016-01-20
+## [0.1.3] - 2016-01-19
+### Fixed
+- Evidently I suck at fixing things.
+
+## [0.1.2] - 2016-01-19
 ### Fixed
 - Last version did not fix case where words of the same size were colliding. now fixed
 
@@ -13,4 +17,4 @@ All notable changes to this project will be documented in this file. This change
 ### Added
 - Word positioning function
 
-[0.1.0]: https://github.com/your-name/woolpack/compare/0.1.0-SNAPSHOT...0.1.0
+[0.1.3]: https://github.com/akjetma/woolpack/compare/0.1.0...0.1.3
