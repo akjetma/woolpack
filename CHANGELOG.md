@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
+## [0.1.1] - 2016-01-19
+### Fixed
+- Tries all rotations
+
 ## [0.1.0] - 2016-01-18
 ### Added
 - Word positioning function

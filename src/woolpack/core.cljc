@@ -142,7 +142,7 @@
          [y-min y-max] (sort [y1 y2])
          box (box-corners [x-min y-min] [x-max y-max] -1)
          success? (not-any? (partial collide? box) (:boxes cloud))
-         exhausted? (= 3 tries)]
+         exhausted? (= 5 tries)]
      (cond 
        success? [x1 y1 x2 y2 rotation box]       
        exhausted? nil
