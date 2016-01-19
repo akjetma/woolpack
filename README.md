@@ -2,6 +2,10 @@
 
 A wordcloud layout algorithm in Clojure.
 
+```clojure
+[akjetma/woolpack "0.1.2"]
+```
+
 ## Basic Usage
 
 ```clojure

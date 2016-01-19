@@ -165,7 +165,7 @@
           (assoc :x x2
                  :y y2                  
                  :last-rotation new-rotation
-                 :rotation (mod (+ new-rotation 180) 360))
+                 :rotation (mod (+ new-rotation 90) 360))
           (update :placed conj placed)
           (update :boxes conj box)
           (update :x-min min x1 x2)
