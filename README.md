@@ -4,7 +4,7 @@ A wordcloud layout algorithm in Clojure.
 
 ## Basic Usage
 
-```
+```clojure
 (require '[woolpack.core :as cloud])
 
 (def words 
@@ -12,7 +12,6 @@ A wordcloud layout algorithm in Clojure.
       {:word "wave" :width 40 :height 10}])
 
 (cloud/billow words)
-
 #=> 
 {:x-max 100 
  :y-max 30 
