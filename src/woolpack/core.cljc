@@ -32,19 +32,6 @@
    :unplaceable []
    :runs 0})
 
-(defn box-corners
-  "returns a vector with [top-left top-right bot-left bot-right] coords 
-   given the top-left and bot-right corners. padding shrinks or expands the
-   box about its center."
-  ([xy-min xy-max] (box-corners xy-min xy-max 0))
-  ([[x1 y1] [x2 y2] pad]
-   (let [x1 (- x1 pad)
-         y1 (- y1 pad)
-         x2 (+ x2 pad)
-         y2 (+ y2 pad)]
-     [[x1 y1] [x2 y1] 
-      [x1 y2] [x2 y2]])))
-
 (defn d-trans
   [mag [x y] x-dir y-dir]
   [(x-dir x mag)
