@@ -32,12 +32,20 @@
    :unplaceable []
    :runs 0})
 
+(defn abs
+  [n]
+  (if (neg? n)
+    (* n -1)
+    n))
+
 (defn d-trans
+  "translate a point diagonally by some magnitude in some quadrant"
   [mag [x y] x-dir y-dir]
   [(x-dir x mag)
    (y-dir y mag)])
 
 (defn pad-box
+  "expand or contract a box's points"
   [[a b
     c d]
    amt]
@@ -46,6 +54,7 @@
      (pad c - +) (pad d + +)]))
 
 (defn box-corners
+  "given two points, return four points defining box"
   [[x1 y1] [x2 y2]]
   [[x1 y1] [x2 y1] 
    [x1 y2] [x2 y2]])
@@ -57,20 +66,13 @@
     c d]]
   [[a b] [c d] [a c] [b d]])
 
-(defn orthogonal?
-  "takes two line segments, returns true if the lines are perpendicular."
-  [[[_ y1] [_ y2]] 
-   [[_ y3] [_ y4]]]
-  (not= (= y1 y2)
-        (= y3 y4)))
-
 (defn intersecting?
   "takes two line segments, returns true if they intersect"
   [a b]
   (boolean
-   (when (orthogonal? a b) 
-     (let [[[x1 y1] [x2 y2]] a
-           [[x3 y3] [x4 y4]] b]
+   (let [[[x1 y1] [x2 y2]] a
+         [[x3 y3] [x4 y4]] b]
+     (when-not (= (= y1 y2) (= y3 y4))
        (or (and (or (<= x1 x3 x2)
                     (>= x1 x3 x2))
                 (or (<= y3 y1 y4)
@@ -116,16 +118,13 @@
   shape, find where the next shape should start based on its
   rotation."
   [{:keys [x y last-rotation]} {:keys [height]} rotation]
-  (condp = [last-rotation rotation]
-    [right right] [x (- y height)]
-    [right left] [x (+ y height)]
-    [left left] [x (+ y height)]
-    [left right] [x (- y height)]
-    [up up] [(- x height) y]
-    [up down] [(+ x height) y]
-    [down down] [(+ x height) y]
-    [down up] [(- x height) y]        
-    [x y]))
+  (if (= 90 (abs (- rotation last-rotation)))
+    [x y]
+    (condp = rotation
+      right [x (- y height)]
+      left [x (+ y height)]
+      up [(- x height) y]
+      down [(+ x height) y])))
 
 (defn end
   "returns the coordinate that describes the opposite corner of
@@ -171,7 +170,7 @@
           (assoc :x x2
                  :y y2                  
                  :last-rotation new-rotation
-                 :rotation (mod (+ new-rotation 180) 360))
+                 :rotation (mod (+ new-rotation 90) 360))
           (update :placed conj placed)
           (update :boxes conj box)
           (update :x-min min x1 x2)
@@ -186,16 +185,16 @@
   > (expand-cloud {:placed []} [{:width 100 :height 10}])
   #=> {:placed [{:width 100 :height 10 :x 20 :y 70}]}"   
   ([cloud words]
-   (let [{:keys [unplaceable x-max y-min y-max runs] :as greater-cloud} (reduce add-word cloud words)]
+   (let [{:keys [unplaceable x-min y-min y-max runs] :as greater-cloud} (reduce add-word cloud words)]
      (if (or (empty? unplaceable) (= runs 10))
        greater-cloud
        (expand-cloud
         (assoc 
          greater-cloud
-         :x x-max
-         :y (rand-nth (range y-min y-max)) 
-         :rotation (rand-nth directions) 
-         :last-rotation (rand-nth directions)
+         :x x-min
+         :y y-max
+         :rotation up
+         :last-rotation left
          :unplaceable []
          :runs (inc runs))
         (shuffle unplaceable))))))

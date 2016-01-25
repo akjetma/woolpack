@@ -1,6 +1,10 @@
 # Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
+## [0.1.4] - 2016-01-25
+### Changed
+- Performance improvements.
+
 ## [0.1.3] - 2016-01-19
 ### Fixed
 - Evidently I suck at fixing things.
@@ -17,4 +21,4 @@ All notable changes to this project will be documented in this file. This change
 ### Added
 - Word positioning function
 
-[0.1.3]: https://github.com/akjetma/woolpack/compare/0.1.0...0.1.3
+

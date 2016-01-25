@@ -1,4 +1,4 @@
-(defproject akjetma/woolpack "0.1.3"
+(defproject akjetma/woolpack "0.1.4"
   :author "Adam Jetmalani <https://akjetma.github.io>"
   :description "Wordcloud layout algorithm"
   :url "http://github.com/akjetma/woolpack"
