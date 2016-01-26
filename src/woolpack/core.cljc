@@ -4,33 +4,6 @@
 (def ^:const down 90)
 (def ^:const left 180)
 (def ^:const up 270)
-(def ^:const directions [right down left up])
-
-(def ^:const catalyst
-  "This is the starting point for the structure that describes the wordcloud.
-   - last-rotation, rotation, x, and y are values determined during iteration n
-     to compute iteration n+1 and are not used outside of the construction process.
-   - x-min, x-max, y-min, y-max are recomputed with each iteration to keep track
-     of the bounding box of the cloud.
-   - boxes aggregates bounding box lines for the words. to be used for collision detection
-     throughout the construction process. not used outside of contruction.
-   - placed carries the meat of the information, the input words with x, y, and rotation
-     attributes added.
-   - when a word cannot be placed, it goes into unplaceable to be retried later.
-   - runs keeps track of the number of times we have (re)tried placing the 
-     input words."
-  {:last-rotation up
-   :rotation right
-   :x 0 
-   :y 0 
-   :x-min 0 
-   :x-max 0
-   :y-min 0 
-   :y-max 0
-   :boxes []
-   :placed []
-   :unplaceable []
-   :runs 0})
 
 (defn abs
   [n]
@@ -179,24 +152,35 @@
           (update :y-max max y1 y2)))
     (update cloud :unplaceable conj word)))
 
+(defn random-start
+  [{:keys [x-min y-min x-max y-max]}]
+  (rand-nth
+   [{:x x-min :y y-min :rotation right :last-rotation left}
+    {:x x-max :y y-min :rotation down :last-rotation up}
+    {:x x-max :y y-max :rotation left :last-rotation right}
+    {:x x-min :y y-min :rotation up :last-rotation down}]))
+
 (defn expand-cloud
   "add to a cloud given a list of words
   contrived example: 
-  > (expand-cloud {:placed []} [{:width 100 :height 10}])
-  #=> {:placed [{:width 100 :height 10 :x 20 :y 70}]}"   
+  > (expand-cloud [{:width 100 :height 10}])
+  #=> {:placed [{:width 100 :height 10 :x 20 :y 70}]}"
+  ([words] 
+   (expand-cloud
+    {:x-min 0 :x-max 0 :y-min 0 :y-max 0
+     :boxes [] :placed [] :unplaceable []
+     :runs 0}
+    words))
   ([cloud words]
-   (let [{:keys [unplaceable x-min y-min y-max runs] :as greater-cloud} (reduce add-word cloud words)]
+   (let [{:keys [unplaceable runs] :as greater-cloud}
+         (reduce 
+          add-word 
+          (merge cloud (random-start cloud)) 
+          words)]
      (if (or (empty? unplaceable) (= runs 10))
        greater-cloud
        (expand-cloud
-        (assoc 
-         greater-cloud
-         :x x-min
-         :y y-max
-         :rotation up
-         :last-rotation left
-         :unplaceable []
-         :runs (inc runs))
+        (assoc greater-cloud :unplaceable [] :runs (inc runs))
         (shuffle unplaceable))))))
  
 (defn fit-cloud
@@ -213,4 +197,4 @@
 (defn billow
   [words]
   (fit-cloud
-   (expand-cloud catalyst words)))
+   (expand-cloud words)))

@@ -1,6 +1,11 @@
 # Change Log
 All notable changes to this project will be documented in this file. This change log follows the conventions of [keepachangelog.com](http://keepachangelog.com/).
 
+## [0.1.5] - 2016-01-25
+### Changed
+- Performance improvements.
+- Generates more diverse cloud shapes.
+
 ## [0.1.4] - 2016-01-25
 ### Changed
 - Performance improvements.

@@ -3,19 +3,26 @@
 A wordcloud layout algorithm in Clojure.
 
 ```clojure
-[akjetma/woolpack "0.1.4"]
+[akjetma/woolpack "0.1.5"]
 ```
 
 ## Basic Usage
 
 ```clojure
-(require '[woolpack.core :as cloud])
+#=> (require '[woolpack.core :as cloud])
+```
 
-;; input just has to have :width and :height properties, other attributes get carried along
-(def words 
-  [{:word "vapor" :width 100 :height 20} 
-   {:word "wave" :width 40 :height 10}])
+Input is a list of maps with `:width` and `:height` properties.
 
+```clojure
+#=> (def words 
+      [{:word "vapor" :width 100 :height 20} 
+       {:word "wave" :width 40 :height 10}])
+```
+
+Output is the list with `:x`, `:y`, and `:rotation` properties to each map.
+
+```
 (cloud/billow words)
 #=> 
 {:x-max 100 
